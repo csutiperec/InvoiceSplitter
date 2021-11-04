@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react'
 import { View, Text } from 'react-native'
 import { useGroups, useGroupUpdateContext } from './GroupsProvider';
@@ -11,19 +10,9 @@ const PeopleListSplittingScreen = ({navigation, route}:any) => {
 
     const handleOnPress = () =>{
         setGroups([{name: 'group1', members: ['Pepo', 'Kitti', 'Barna']}, {name: 'group2', members: ['Pepo2', 'Kitti2', 'Barna2']}]);
-        if(groups.length>0){
-            console.log(groups[0].name, groups[0].members);
-        }
-        else
-            console.log('Length is 0');
     };
     const handleOnPress2 = () =>{
         setGroups([]);
-        if(groups.length>0){
-            console.log(groups[0].name, groups[0].members);
-        }
-        else
-            console.log('Length is 0');
     };
 
     return (
