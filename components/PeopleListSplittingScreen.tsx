@@ -20,6 +20,10 @@ const PeopleListSplittingScreen = ({navigation, route}:any) => {
         navigation.navigate('AddNewPerson',{onReturn:onReturn});
     };
 
+    const onNextClickHandler = () =>{
+        navigation.navigate('InvoiceIn',{groupName:selectedGroup, people: people});
+    };
+
     const onReturn = (name:string) =>{
         if(name&&name !== null&&name!==''){
             const newPerson = {id:people.length, name: name}
@@ -39,7 +43,7 @@ const PeopleListSplittingScreen = ({navigation, route}:any) => {
                     <Button onPress={onNewPersonClickHandler} text='Add Person'/>
                 </View>
                 <View style={styles.spaceAfter}>
-                    <Button text='Next'/>
+                    <Button onPress={onNextClickHandler} text='Next'/>
                 </View>
             </View>
         </View>
