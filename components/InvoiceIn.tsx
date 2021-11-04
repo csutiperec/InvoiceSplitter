@@ -3,13 +3,18 @@ import { View, StyleSheet } from 'react-native'
 import Button from './Button';
 
 const InvoiceIn = ({navigation, route}:any) => {
+
+    const onManualInput = () => {
+        navigation.navigate('Invoice', {groupName:route.params.groupName, people: route.params.people});
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.spaceAfter}>
                 <Button text='Take a picture' />
             </View>
             <View style={styles.spaceAfter}>
-                <Button text='Manual input' />
+                <Button onPress={onManualInput} text='Manual input' />
             </View>
         </View>
     )
