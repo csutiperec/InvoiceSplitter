@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { PickerItem } from 'react-native-woodpicker'
 import { Picker } from 'react-native-woodpicker'
 import Button from './Button'
+import { useGroups } from './GroupsProvider';
 
 const NewSplitScreen = ({navigation}:any) => {
-    const [pickedGroupName, setpickedGroupName] = useState<PickerItem>({label: 'None', value: 0})
+    const [pickedGroupName, setpickedGroupName] = useState<PickerItem>({label: 'None', value: 0});
+    const [pickerItems, setPickerItems] = useState([] as Array<PickerItem>);
+    const groups = useGroups();
 
-    const group: Array<PickerItem> = [
-        {label: 'None', value: 0},
-        {label: 'Test Data1', value: 1},
-        {label: 'Test Data2', value: 2},
-        {label: 'Test Data3', value: 3},
-        {label: 'Test Data4', value: 4}
-    ];
+    useEffect(() => {
+        const initValues = groups.map((group, index)=>{return {label:group.name, value: index+1}});
+        initValues.unshift({label: 'None', value: 0});
+        setPickerItems(initValues);
+        setpickedGroupName(pickerItems[0]);
+    },[groups])
 
     const handleOnPress = () =>{
         navigation.navigate('SplittingPeopleList', {selectedGroup:pickedGroupName.label});
@@ -24,7 +26,7 @@ const NewSplitScreen = ({navigation}:any) => {
             <View style={styles.container}>
                 <View style={styles.spaceAfter}>
                     <Text style={styles.picker_text}>Select a friend group!</Text>
-                    <Picker textInputStyle={styles.picker_value_text} containerStyle={styles.picker_container} item={pickedGroupName} items={group} onItemChange={setpickedGroupName}/>
+                    <Picker textInputStyle={styles.picker_value_text} containerStyle={styles.picker_container} item={pickedGroupName} items={pickerItems} onItemChange={setpickedGroupName}/>
                 </View>
                 <View style={styles.spaceAfter}>
                     <Button onPress={handleOnPress} text='Next' buttonStyle={styles.picker_container} textStyle={styles.picker_value_text}/>
