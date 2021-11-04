@@ -19,13 +19,28 @@ const PeopleListSplittingScreen = ({navigation, route}:any) => {
     useEffect(() => {
         console.log(people);
     }, [people])
-    
+
+    const onNewPersonClickHandler = () =>{
+        navigation.navigate('AddNewPersonToSplittingList',{onReturn:onReturn});
+    };
+
+    const onReturn = (name:string) =>{
+        if(name&&name !== null&&name!==''){
+            const newPerson = {id:people.length, name: name}
+            const newArray = [...people];
+            newArray.push(newPerson);
+            setPeople(newArray);
+        }
+    };
+
     return (
         <View>
-            <FlatList style={styles.spaceAfter} data={people} renderItem={(person)=> <PeopleListItem text={person.item.name}/>} keyExtractor={item => item.id.toString()}/>
+            <View style={{maxHeight:'80%'}}>
+                <FlatList style={styles.spaceAfter} data={people} renderItem={item => <PeopleListItem text={item.item.name}/>} keyExtractor={item => item.id.toString()}/>
+            </View>
             <View style={styles.centered}>
                 <View style={styles.spaceAfter}>
-                    <Button text='Add Person'/>
+                    <Button onPress={onNewPersonClickHandler} text='Add Person'/>
                 </View>
                 <View style={styles.spaceAfter}>
                     <Button text='Next'/>
