@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import Button from './Button'
 import { LogBox } from 'react-native';
 
-const AddNewPersonToSplittingList = ({route, navigation}:any) => {
+const AddNewPerson = ({route, navigation}:any) => {
     const [text, setText] = useState('');
 
     LogBox.ignoreLogs([
@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
     }
   });  
 
-export default AddNewPersonToSplittingList;
+export default AddNewPerson;
