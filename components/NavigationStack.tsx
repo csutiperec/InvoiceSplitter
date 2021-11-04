@@ -14,7 +14,7 @@ const NavigationStack = () => {
           <Stack.Screen name='Main' component={MainScreen}/>
           <Stack.Screen name='SplittingPeopleList' component={PeopleListSplittingScreen} options={{title: 'People'}}/>
           <Stack.Screen name='AddNewPerson' component={AddNewPerson} options={{title: 'Add person to list'}}/>
-          <Stack.Screen name='CreateGroup' component={CreateGroup} options={{title:'Group'}}/>
+          <Stack.Screen name='CreateGroup' component={CreateGroup} options={{title:'Group'}} initialParams={{name: '', mode: 'add'}}/>
         </Stack.Navigator>
       </NavigationContainer>
     )

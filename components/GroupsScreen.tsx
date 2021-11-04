@@ -1,15 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import Button from './Button';
-import { useGroups, useGroupUpdateContext } from './GroupsProvider';
+import { useGroups } from './GroupsProvider';
 
 const GroupsScreen = ({navigation}:any) => {
     const groups = useGroups();
-    const setGroups = useGroupUpdateContext();
-
-    useEffect(() => {
-        setGroups([{name:'group1', members:['member1','member2','member3']},{name:'group2', members:['member12','member22','member32']}]);
-    }, [])
 
     const onNewGroupClick = () => {
         navigation.navigate('CreateGroup');
@@ -21,17 +16,20 @@ const GroupsScreen = ({navigation}:any) => {
                 <Button onPress={onNewGroupClick} text='New Group'/>
             </View>
             <View style={[styles.spaceAfter, styles.groupsContainer]}>
-                <FlatList data={groups} renderItem={(item)=><GroupListItem group={item.item}/>} keyExtractor={item => item.name}/>
+                <FlatList data={groups} renderItem={(item)=><GroupListItem group={item.item} navigation={navigation}/>} keyExtractor={item => item.name}/>
             </View>
         </View>
     )
 }
 
-const GroupListItem = (props:{group:{name:string, members:Array<String>}}) => {
+const GroupListItem = (props:{group:{name:string, members:Array<String>},navigation:any}) => {
+    const onModifyClick = () => {
+        props.navigation.navigate('CreateGroup',{name: props.group.name, mode: 'modify'});
+    };
     return(
         <View style={[styles.groupListItemContainer, styles.spaceAfter]}>
             <Text style={styles.groupListItemName}>{props.group.name}</Text>
-            <Button text='Modify' buttonStyle={styles.groupListItemButton}/>
+            <Button onPress={onModifyClick} text='More' buttonStyle={styles.groupListItemButton}/>
         </View>
     )
 };
