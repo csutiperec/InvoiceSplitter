@@ -9,6 +9,8 @@ import InvoiceIn from './InvoiceIn';
 import InvoiceManual from './InvoiceManual';
 import Invoice from './Invoice';
 import AddItemToInvoice from './AddItemToInvoice';
+import InvoiceSummary from './InvoiceSummary';
+import PersonItems from './PersonItems';
 
 const NavigationStack = () => {
     const Stack = createNativeStackNavigator();
@@ -23,6 +25,8 @@ const NavigationStack = () => {
           <Stack.Screen name='InvoiceManual' component={InvoiceManual} options={{title: 'Invoice Item Manual Input'}}/>
           <Stack.Screen name='Invoice' component={Invoice} options={{title: 'Invoice'}}/>
           <Stack.Screen name='AddItemToInvoice' component={AddItemToInvoice} options={{title: 'Add Item'}} initialParams={{itemID: -1, itemName:'', itemPrice:'', debters:[]}}/>
+          <Stack.Screen name='InvoiceSummary' component={InvoiceSummary} options={{title: 'Summary'}} />
+          <Stack.Screen name='PersonItems' component={PersonItems} options={{title: 'Person'}} />
         </Stack.Navigator>
       </NavigationContainer>
     )

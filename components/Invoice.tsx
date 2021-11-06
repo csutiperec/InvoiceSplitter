@@ -33,7 +33,8 @@ const Invoice = ({navigation, route}:any) => {
     };
 
     const onCalculateClick = () => {
-        console.log('calculate clicked');
+        if(0<invoiceItems.length)
+            navigation.navigate('InvoiceSummary', {groupName:route.params.groupName, invoiceItems:invoiceItems});
     };
 
     return (
