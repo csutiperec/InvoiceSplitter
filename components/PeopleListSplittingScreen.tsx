@@ -21,15 +21,19 @@ const PeopleListSplittingScreen = ({navigation, route}:any) => {
     };
 
     const onNextClickHandler = () =>{
-        navigation.navigate('InvoiceIn',{groupName:selectedGroup, people: people});
+        if(people.length>0)
+            navigation.navigate('InvoiceIn',{groupName:selectedGroup, people: people});
     };
 
     const onReturn = (name:string) =>{
         if(name&&name !== null&&name!==''){
             const newPerson = {id:people.length, name: name}
-            const newArray = [...people];
-            newArray.push(newPerson);
-            setPeople(newArray);
+            const index = people.find((person)=>{return person.name===newPerson.name});
+            if(index === undefined){
+                const newArray = [...people];
+                newArray.push(newPerson);
+                setPeople(newArray);
+            }
         }
     };
 

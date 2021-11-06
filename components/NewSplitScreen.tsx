@@ -18,7 +18,7 @@ const NewSplitScreen = ({navigation}:any) => {
     },[groups])
 
     const handleOnPress = () =>{
-        navigation.navigate('SplittingPeopleList', {selectedGroup:pickedGroupName.label});
+        navigation.navigate('PeopleListSplittingScreen', {selectedGroup:pickedGroupName.label});
     };
 
     return (

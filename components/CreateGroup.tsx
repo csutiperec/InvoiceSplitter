@@ -75,9 +75,12 @@ const CreateGroup = ({navigation, route}:any) => {
     const onReturn = (name:string) =>{
         if(name&&name!==''){
             const newPerson = {id:people.length, name: name}
-            const newArray = [...people];
-            newArray.push(newPerson);
-            setPeople(newArray);
+            const index = people.find((person)=>{return person.name===newPerson.name});
+            if(index === undefined){
+                const newArray = [...people];
+                newArray.push(newPerson);
+                setPeople(newArray);
+            }
         }
     };
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View, LogBox } from 'react-native';
 import Button from './Button'
-import { LogBox } from 'react-native';
 
 const AddNewPerson = ({route, navigation}:any) => {
     const [text, setText] = useState('');
@@ -23,7 +22,6 @@ const AddNewPerson = ({route, navigation}:any) => {
             <View style={styles.spaceAfter}>
                 <Button onPress={handleOnPress} text='Next'/>
             </View>
-            
         </View>
     )
 }

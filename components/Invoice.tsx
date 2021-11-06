@@ -1,44 +1,63 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { View, Text, FlatList, StyleSheet } from 'react-native'
 import Button from './Button'
 
 const Invoice = ({navigation, route}:any) => {
     const [invoiceItems, setInvoiceItems] = useState([] as Array<InvoiceItem>)
 
-    useEffect(() => {
-        setInvoiceItems([
-            {id:0, itemName:'item1', itemPrice:1, debters:['1', '2', '3']},
-            {id:1, itemName:'item2', itemPrice:1, debters:['1', '2', '3']},
-            {id:2, itemName:'item3', itemPrice:1, debters:['1', '2', '3']},
-            {id:3, itemName:'item4', itemPrice:1, debters:['1', '2', '3']},
-            {id:4, itemName:'item5', itemPrice:1, debters:['1', '2', '3']},
-        ]);
-    }, [])
+    const onReturn = (itemName:string, itemPrice:number, debters:Array<string>, itemID:number) => {
+        if(itemName!='' && itemPrice!=0){
+            if(debters.length===0){
+                debters = route.params.people.map((person:{id:number, name:string})=>{return person.name});
+            }
+            const newArray = [...invoiceItems];
+            if(itemID<0){
+                
+                newArray.push({id:newArray.length, itemName:itemName, itemPrice:itemPrice, debters:debters});
+            }
+            else{
+                const item_ = newArray.find((item)=>{return item.id===itemID});
+                if(item_=== undefined) return;
+                const index = newArray.indexOf(item_);
+                newArray.splice(index, 1, {id:newArray.length, itemName:itemName, itemPrice:itemPrice, debters:debters});
+            }
+            setInvoiceItems(newArray);
+        }
+    }
+    const onAddItemClick = () => {
+        navigation.navigate('AddItemToInvoice', {onReturn:onReturn, groupName:route.params.groupName, people: route.params.people})
+    };
+
+    const onListItemClick = (item:InvoiceItem) => {
+        navigation.navigate('AddItemToInvoice', {onReturn:onReturn, groupName:route.params.groupName, people: route.params.people, itemID:item.id, itemName:item.itemName, itemPrice:item.itemPrice, debters:item.debters})
+    };
+
+    const onCalculateClick = () => {
+        console.log('calculate clicked');
+    };
 
     return (
         <View style={styles.container}>
             <View style={{maxHeight:'70%'}}>
-                <FlatList data={invoiceItems} renderItem={(item) => {return <InvoiceListItem itemName={item.item.itemName} itemPrice={item.item.itemPrice}/>}} keyExtractor={item => item.id.toString()}/>
+                <FlatList data={invoiceItems} renderItem={(item) => {return <InvoiceListItem onClick={()=>{onListItemClick(item.item)}} itemName={item.item.itemName} itemPrice={item.item.itemPrice}/>}} keyExtractor={item => item.id.toString()}/>
             </View>
             <View style={styles.spaceBefore}>
-                <Button text='Add Item'/>
+                <Button onPress={onAddItemClick} text='Add Item'/>
             </View>
             <View style={[styles.spaceBefore, styles.spaceAfter]}>
-                <Button text='Calculate'/>
+                <Button onPress={onCalculateClick} text='Calculate'/>
             </View>
         </View>
     )
 }
 
-const InvoiceListItem = (props:{itemName:string,itemPrice:number}) => {
+const InvoiceListItem = (props:{itemName:string,itemPrice:number, onClick:any}) => {
     return(
         <View style={[styles.itemcontainer, styles.spaceBefore]}>
             <View style={styles.nameContainer}>
                 <Text>{props.itemName}</Text>
             </View>
-            <View style={styles.priceContainer}>
-                <Text>{props.itemPrice} Ft</Text>
-            </View>
+            <Button onPress={props.onClick} buttonStyle={styles.priceContainer} text={props.itemPrice+' Ft'}/>
         </View>
     )
 }
