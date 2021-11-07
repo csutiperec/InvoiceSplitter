@@ -9,13 +9,18 @@ const InvoiceSummary = ({navigation, route}:any) => {
     const history = useHistory();
 
     useEffect(() => {
-        const result = calculateResult(route.params.invoiceItems);
-        setCalculationResults(result);
-        const newHistory = [...history];
-        const newItem = {id:route.params.saveID, date:new Date(), groupName:route.params.groupName, invoiceSummary:result};
-        newHistory.splice(route.params.saveID, 1, newItem)
-        setHistory(newHistory);
-        console.log(route.params.saveID)
+        if(route.params.mode === 'create'){
+            const result = calculateResult(route.params.invoiceItems);
+            setCalculationResults(result);
+            const newHistory = [...history];
+            const newItem = {id:route.params.saveID, date:new Date(), groupName:route.params.groupName, invoiceSummary:result};
+            newHistory.splice(route.params.saveID, 1, newItem)
+            setHistory(newHistory);
+        }
+        else if(route.params.mode === 'history')
+        {
+            setCalculationResults(route.params.invoiceItems);
+        }
     }, [])
 
     const calculateResult = (invoiceItems:Array<InvoiceItem>):Array<calculationResult> => {

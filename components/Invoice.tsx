@@ -34,7 +34,7 @@ const Invoice = ({navigation, route}:any) => {
 
     const onCalculateClick = () => {
         if(0<invoiceItems.length)
-            navigation.navigate('InvoiceSummary', {groupName:route.params.groupName, invoiceItems:invoiceItems, saveID: route.params.saveID});
+            navigation.navigate('InvoiceSummary', {groupName:route.params.groupName, invoiceItems:invoiceItems, saveID: route.params.saveID, mode:'create'});
     };
 
     return (

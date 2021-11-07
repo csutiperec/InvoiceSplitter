@@ -40,6 +40,10 @@ const CreateGroup = ({navigation, route}:any) => {
     const onFinishClickHandler = () =>{
         if(text&&text!=''&&people.length>0){
             const newGroup = {name:text, members:people.map(element => element.name)};
+            if(newGroup.name==='None'){
+                setErrorText('Group name can not be "None"');
+                return;
+            }
             let i = 0;
             switch (route.params.mode){
                 case 'add':
