@@ -13,7 +13,7 @@ const InvoiceSummary = ({navigation, route}:any) => {
             const result = calculateResult(route.params.invoiceItems);
             setCalculationResults(result);
             const newHistory = [...history];
-            const newItem = {id:route.params.saveID, date:new Date(), groupName:route.params.groupName, invoiceSummary:result};
+            const newItem = {date:new Date(), groupName:route.params.groupName, invoiceSummary:result};
             newHistory.splice(route.params.saveID, 1, newItem)
             setHistory(newHistory);
         }
@@ -49,11 +49,18 @@ const InvoiceSummary = ({navigation, route}:any) => {
     };    
 
     const onListItemClick = (item:calculationResult) => {
-        navigation.navigate('PersonItems', {title:item.personName, invoiceItems:item.itemsBought})
+        navigation.navigate('PersonItems', {title:item.personName, invoiceItems:item.itemsBought});
     };
 
     const onFinishClick = () => {
-        navigation.navigate('Main')
+        navigation.navigate('Main');
+    };
+
+    const onDeleteClick = () => {
+        const newHistory = [...history];
+        newHistory.splice(route.params.saveID, 1)
+        setHistory(newHistory);
+        navigation.navigate('Main');
     };
 
     return (
@@ -62,6 +69,11 @@ const InvoiceSummary = ({navigation, route}:any) => {
                 <FlatList data={calculationResults} renderItem={(item) => {return <ResultListItem onClick={()=>{onListItemClick(item.item)}} personName={item.item.personName} personPaying={item.item.personPaying}/>}} keyExtractor={item => item.personName}/>
             </View>
             <View style={[styles.spaceBefore, styles.spaceAfter]}>
+                {
+                    route.params.mode === 'history'?
+                        <View style={styles.spaceAfter}><Button onPress={onDeleteClick} text='Delete' /></View>
+                        :null
+                }
                 <Button onPress={onFinishClick} text='Finish'/>
             </View>
         </View>

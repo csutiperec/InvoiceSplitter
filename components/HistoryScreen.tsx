@@ -7,16 +7,16 @@ const HistoryScreen = ({navigation}:any) => {
     const history = useHistory();
     return (
         <View style={styles.container}>
-            <FlatList style={[styles.spaceBefore, styles.spaceAfter]} data={history} renderItem={(item)=>{return <HistoryListItem navigation={navigation} item={item.item}/>}} keyExtractor={item=>item.id.toString()}/>
+            <FlatList style={[styles.spaceBefore, styles.spaceAfter]} data={history} renderItem={(item)=>{return <HistoryListItem itemID={item.index} navigation={navigation} item={item.item}/>}} keyExtractor={item=>item.date.toString()}/>
         </View>
     )
 };
 
-const HistoryListItem = (props:{item:History, navigation:any}) =>{
+const HistoryListItem = (props:{item:History, navigation:any, itemID:number}) =>{
     const groupName = props.item.groupName;
     const date = new Date(props.item.date);
     const onClickHandler = () => {
-        props.navigation.navigate('InvoiceSummary',{mode:'history', invoiceItems:props.item.invoiceSummary});
+        props.navigation.navigate('InvoiceSummary',{mode:'history', invoiceItems:props.item.invoiceSummary, saveID:props.itemID});
     };
     return(
         <View style={[styles.itemContainer, styles.spaceAfter]}>
@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
 }); 
 
 type History = {
-    id:number,
     date:Date,
     groupName:string,
     invoiceSummary:Array<calculationResult>

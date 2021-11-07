@@ -22,11 +22,9 @@ export function HistoryProvider({children}:any)
             const jsonValue = await AsyncStorage.getItem('@history');
             if(jsonValue != null){
                 setHistory(JSON.parse(jsonValue));
-                console.log('Read '+jsonValue);
             }
             else{
                 setHistory([]);
-                console.log('Found no file')
             }
         } catch (error) {
             console.log(error);
@@ -38,7 +36,6 @@ export function HistoryProvider({children}:any)
         setHistory(newValue);
         try {
             await AsyncStorage.setItem('@history', JSON.stringify(newValue));
-            console.log('Added '+JSON.stringify(newValue))
         } catch (error) {
             console.log(error);
         }
@@ -59,7 +56,6 @@ export function HistoryProvider({children}:any)
     )
 }
 type History = {
-    id:number,
     date:Date,
     groupName:string,
     invoiceSummary:Array<calculationResult>
