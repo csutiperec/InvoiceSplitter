@@ -6,7 +6,6 @@ import PeopleListSplittingScreen from './PeopleListSplittingScreen';
 import AddNewPerson from './AddNewPerson';
 import CreateGroup from './CreateGroup';
 import InvoiceIn from './InvoiceIn';
-import InvoiceManual from './InvoiceManual';
 import Invoice from './Invoice';
 import AddItemToInvoice from './AddItemToInvoice';
 import InvoiceSummary from './InvoiceSummary';
@@ -22,7 +21,6 @@ const NavigationStack = () => {
           <Stack.Screen name='AddNewPerson' component={AddNewPerson} options={{title: 'Add person to list'}}/>
           <Stack.Screen name='CreateGroup' component={CreateGroup} options={{title:'Group'}} initialParams={{name: '', mode: 'add'}}/>
           <Stack.Screen name='InvoiceIn' component={InvoiceIn} options={{title: 'Invoice In'}}/>
-          <Stack.Screen name='InvoiceManual' component={InvoiceManual} options={{title: 'Invoice Item Manual Input'}}/>
           <Stack.Screen name='Invoice' component={Invoice} options={{title: 'Invoice'}}/>
           <Stack.Screen name='AddItemToInvoice' component={AddItemToInvoice} options={{title: 'Add Item'}} initialParams={{itemID: -1, itemName:'', itemPrice:'', debters:[]}}/>
           <Stack.Screen name='InvoiceSummary' component={InvoiceSummary} options={{title: 'Summary'}} />

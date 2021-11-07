@@ -22,7 +22,7 @@ const PeopleListSplittingScreen = ({navigation, route}:any) => {
 
     const onNextClickHandler = () =>{
         if(people.length>0)
-            navigation.navigate('InvoiceIn',{groupName:selectedGroup, people: people});
+            navigation.navigate('InvoiceIn',{groupName:selectedGroup, people: people, saveID: route.params.saveID});
     };
 
     const onReturn = (name:string) =>{

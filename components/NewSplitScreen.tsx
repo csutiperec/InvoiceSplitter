@@ -4,11 +4,13 @@ import type { PickerItem } from 'react-native-woodpicker'
 import { Picker } from 'react-native-woodpicker'
 import Button from './Button'
 import { useGroups } from './GroupsProvider';
+import { useHistory } from './HistoryProvider';
 
 const NewSplitScreen = ({navigation}:any) => {
     const [pickedGroupName, setpickedGroupName] = useState<PickerItem>({label: 'None', value: 0});
     const [pickerItems, setPickerItems] = useState([] as Array<PickerItem>);
     const groups = useGroups();
+    const history = useHistory()
 
     useEffect(() => {
         const initValues = groups.map((group, index)=>{return {label:group.name, value: index+1}});
@@ -18,7 +20,7 @@ const NewSplitScreen = ({navigation}:any) => {
     },[groups])
 
     const handleOnPress = () =>{
-        navigation.navigate('PeopleListSplittingScreen', {selectedGroup:pickedGroupName.label});
+        navigation.navigate('PeopleListSplittingScreen', {selectedGroup:pickedGroupName.label, saveID:history.length});
     };
 
     return (

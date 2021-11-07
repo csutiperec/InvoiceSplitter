@@ -10,7 +10,7 @@ export function useGroups():Array<Group>{
     return useContext(GroupsContext);
 }
 export function useGroupUpdateContext():any{
-    return useContext(GroupsUpdateContext)
+    return useContext(GroupsUpdateContext);
 }
 
 export function GroupsProvider({children}:any)
@@ -22,11 +22,9 @@ export function GroupsProvider({children}:any)
             const jsonValue = await AsyncStorage.getItem('@groups');
             if(jsonValue != null){
                 setGroups(JSON.parse(jsonValue));
-                console.log('Read '+jsonValue);
             }
             else{
                 setGroups([]);
-                console.log('Found no file')
             }
         } catch (error) {
             console.log(error);
@@ -38,7 +36,6 @@ export function GroupsProvider({children}:any)
         setGroups(newValue);
         try {
             await AsyncStorage.setItem('@groups', JSON.stringify(newValue));
-            console.log('Added '+JSON.stringify(newValue))
         } catch (error) {
             console.log(error);
         }

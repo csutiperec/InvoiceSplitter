@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, FlatList, Text } from 'react-native'
 import Button from './Button'
+import { useHistory, useHistoryUpdateContext } from './HistoryProvider'
 
 const InvoiceSummary = ({navigation, route}:any) => {
     const [calculationResults, setCalculationResults] = useState([] as Array<calculationResult>)
+    const setHistory = useHistoryUpdateContext();
+    const history = useHistory();
 
     useEffect(() => {
         const result = calculateResult(route.params.invoiceItems);
         setCalculationResults(result);
+        const newHistory = [...history];
+        const newItem = {id:route.params.saveID, date:new Date(), groupName:route.params.groupName, invoiceSummary:result};
+        newHistory.splice(route.params.saveID, 1, newItem)
+        setHistory(newHistory);
+        console.log(route.params.saveID)
     }, [])
 
     const calculateResult = (invoiceItems:Array<InvoiceItem>):Array<calculationResult> => {
@@ -39,13 +47,17 @@ const InvoiceSummary = ({navigation, route}:any) => {
         navigation.navigate('PersonItems', {title:item.personName, invoiceItems:item.itemsBought})
     };
 
+    const onFinishClick = () => {
+        navigation.navigate('Main')
+    };
+
     return (
         <View style={styles.container}>
             <View style={{maxHeight:'75%'}}>
                 <FlatList data={calculationResults} renderItem={(item) => {return <ResultListItem onClick={()=>{onListItemClick(item.item)}} personName={item.item.personName} personPaying={item.item.personPaying}/>}} keyExtractor={item => item.personName}/>
             </View>
             <View style={[styles.spaceBefore, styles.spaceAfter]}>
-                <Button text='Finish'/>
+                <Button onPress={onFinishClick} text='Finish'/>
             </View>
         </View>
     )

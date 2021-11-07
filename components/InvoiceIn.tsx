@@ -5,7 +5,7 @@ import Button from './Button';
 const InvoiceIn = ({navigation, route}:any) => {
 
     const onManualInput = () => {
-        navigation.navigate('Invoice', {groupName:route.params.groupName, people: route.params.people});
+        navigation.navigate('Invoice', {groupName:route.params.groupName, people: route.params.people, saveID: route.params.saveID});
     }
 
     return (
