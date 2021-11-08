@@ -69,5 +69,9 @@ type InvoiceItem = {
     id:number,
     itemName:string,
     itemPrice:number,
-    debters:Array<string>
+    debters:Array<Debter>
+}
+type Debter = {
+    name:string,
+    number:number
 }

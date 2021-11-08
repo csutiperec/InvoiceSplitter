@@ -26,17 +26,21 @@ const InvoiceSummary = ({navigation, route}:any) => {
     const calculateResult = (invoiceItems:Array<InvoiceItem>):Array<calculationResult> => {
         const people = [] as Array<calculationResult>;
         invoiceItems.forEach(item => {
-            const perPersonPrice = item.itemPrice/item.debters.length;
+            let divisionNumber = 0;
+            item.debters.forEach(debter => {
+                divisionNumber += debter.number;
+            });
+            const perPersonPrice = item.itemPrice/divisionNumber;
             item.debters.forEach(person => {
-                const personInPeople = people.find((person_)=>{return person===person_.personName});
+                const personInPeople = people.find((person_)=>{return person.name===person_.personName});
                 if(personInPeople){
-                    personInPeople.personPaying = personInPeople.personPaying + perPersonPrice;
+                    personInPeople.personPaying = personInPeople.personPaying + perPersonPrice * person.number;
                     personInPeople.itemsBought.push(item);
                 }
                 else{
                     people.push({
-                        personName:person,
-                        personPaying:perPersonPrice,
+                        personName:person.name,
+                        personPaying:perPersonPrice * person.number,
                         itemsBought:[item]
                     });
                 }
@@ -134,7 +138,11 @@ type InvoiceItem = {
     id:number,
     itemName:string,
     itemPrice:number,
-    debters:Array<string>
+    debters:Array<Debter>
+}
+type Debter = {
+    name:string,
+    number:number
 }
 
 export default InvoiceSummary

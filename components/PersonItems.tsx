@@ -9,23 +9,41 @@ const PersonItems = ({navigation, route}:any) => {
         setInvoiceItems(route.params.invoiceItems);
     }, [])
 
+    const getDebterNr = (debters:Array<Debter>):number => {
+        let returnValue = 0;
+        debters.forEach(element => {
+            returnValue += element.number;
+        });
+        return returnValue;
+    };
+
+    const getShare = (debters:Array<Debter>, name:string) => {
+        const item = debters.find((i)=>{return i.name===name});
+        if(item)
+        {
+            return item.number;
+        }
+        return 0;
+    }
+
     return (
         <View style={styles.container}>
             <View>
-                <FlatList data={invoiceItems} renderItem={(item) => {return <InvoiceListItem itemName={item.item.itemName} itemPrice={item.item.itemPrice} debterNr={item.item.debters.length}/>}} keyExtractor={item => item.id.toString()}/>
+                <FlatList data={invoiceItems} renderItem={(item) => {return <InvoiceListItem itemName={item.item.itemName} itemPrice={item.item.itemPrice} debterNr={getDebterNr(item.item.debters)} share={getShare(item.item.debters, route.params.title)}/>}} keyExtractor={item => item.id.toString()}/>
             </View>
         </View>
     )
 }
 
-const InvoiceListItem = (props:{itemName:string,itemPrice:number,debterNr:number}) => {
+const InvoiceListItem = (props:{itemName:string,itemPrice:number,debterNr:number, share:number}) => {
     return(
         <View style={[styles.itemcontainer, styles.spaceBefore]}>
             <View style={styles.nameContainer}>
                 <Text>{props.itemName}</Text>
             </View>
             <View style={styles.priceContainer}>
-                <Text>{Math.round(props.itemPrice/props.debterNr)+' Ft * '+props.debterNr}</Text>
+                <Text>{Math.round(props.itemPrice)+' Ft'}</Text>
+                <Text>{Math.round(props.itemPrice/props.debterNr)+' Ft * '+props.share}</Text>
             </View>
         </View>
     )
@@ -35,7 +53,11 @@ type InvoiceItem = {
     id:number,
     itemName:string,
     itemPrice:number,
-    debters:Array<string>
+    debters:Array<Debter>
+}
+type Debter = {
+    name:string,
+    number:number
 }
 
 const styles = StyleSheet.create({

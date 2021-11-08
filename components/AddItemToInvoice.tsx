@@ -6,7 +6,7 @@ const AddItemToInvoice = ({route, navigation}:any) => {
     const [itemID, setItemID] = useState(-1);
     const [itemName, setItemName] = useState('');
     const [itemPrice, setItemPrice] = useState('');
-    const [debters, setDebters] = useState([] as Array<string>);
+    const [debters, setDebters] = useState([] as Array<Debter>);
 
     LogBox.ignoreLogs([
         'Non-serializable values were found in the navigation state',
@@ -24,16 +24,40 @@ const AddItemToInvoice = ({route, navigation}:any) => {
         route.params.onReturn(itemName, itemPrice, debters, itemID);
     };
 
-    const handleOnListItemChecked = (name:string) =>{
-        const index = debters.indexOf(name);
+    const handleOnListItemAdd = (name:string) =>{
+        const item = debters.find((i)=>{return i.name===name});
         const newArray = [...debters];
-        if(0<=index){
-            newArray.splice(index, 1);
+        if (item === undefined){
+            newArray.push({name:name, number:1});
         }
         else{
-            newArray.push(name);
+            const index = debters.indexOf(item);
+            newArray.splice(index, 1, {name:name, number:item.number+1});
         }
         setDebters(newArray);
+    };
+
+    const handleOnListItemSub = (name:string) =>{
+        const item = debters.find((i)=>{return i.name===name});
+        const newArray = [...debters];
+        if (item){
+            const index = debters.indexOf(item);
+            const newNumber = item.number-1;
+            if(newNumber === 0){
+                newArray.splice(index, 1);
+            }
+            else
+                newArray.splice(index, 1, {name:name, number:newNumber});
+        }
+        setDebters(newArray);
+    };
+
+    const getNumberForName = (name:string):number => {
+        const item = debters.find((i)=>{return i.name===name});
+        if(item){
+            return item.number
+        }
+        return 0;
     };
 
     return (
@@ -45,7 +69,7 @@ const AddItemToInvoice = ({route, navigation}:any) => {
                 <TextInput onChangeText={text=>setItemPrice(text)} value={itemPrice.toString()} placeholder='Price' style={[styles.textField, styles.textFieldText]} keyboardType='numeric'/>
             </View>
             <View style={[{maxHeight:'60%'}, styles.spaceAfter]}>
-                <FlatList data={route.params.people} renderItem={(item) => {return <AddItemPeopleListItem checked={debters.includes(item.item.name)} name={item.item.name} onClick={()=>{handleOnListItemChecked(item.item.name)}} />}} keyExtractor={item => item.id.toString()}/>
+                <FlatList data={route.params.people} renderItem={(item) => {return <AddItemPeopleListItem buyNumber={getNumberForName(item.item.name)} name={item.item.name} onClickAdd={()=>{handleOnListItemAdd(item.item.name)}} onClickSub={()=>{handleOnListItemSub(item.item.name)}} />}} keyExtractor={item => item.id.toString()}/>
             </View>
             <View style={[styles.spaceAfter, styles.spaceBefore]}>
                 <Button onPress={handleOnPressNext} text='Add Item'/>
@@ -54,10 +78,14 @@ const AddItemToInvoice = ({route, navigation}:any) => {
     )
 }
 
-const AddItemPeopleListItem = (props:{name:string, onClick:any, checked: boolean}) => {
+const AddItemPeopleListItem = (props:{name:string, onClickAdd:any, onClickSub:any, buyNumber: number}) => {
 
-    const onPressHandler = () => {
-        props.onClick();
+    const onPressAddHandler = () => {
+        props.onClickAdd();
+    };
+
+    const onPressSubHandler = () => {
+        props.onClickSub();
     };
 
     return(
@@ -65,10 +93,18 @@ const AddItemPeopleListItem = (props:{name:string, onClick:any, checked: boolean
             <View style={styles.nameContainer}>
                 <Text>{props.name}</Text>
             </View>
-            <Button onPress={onPressHandler} text={props.checked? 'X' : ''} buttonStyle={[styles.checkboxContainer, props.checked? styles.checkboxSelected:styles.checkboxIdle]}/>
+            <View style={styles.valueContainer}>
+                {props.buyNumber>0?<Button onPress={onPressSubHandler} text='-' buttonStyle={[styles.checkboxIdle, styles.subContainer]}/>:null}
+                <Button onPress={onPressAddHandler} text={props.buyNumber>0? props.buyNumber.toString() : ''} buttonStyle={[styles.checkboxContainer, props.buyNumber>0? styles.checkboxSelected:styles.checkboxIdle]}/>
+            </View>
         </View>
     )
 };
+
+type Debter = {
+    name:string,
+    number:number
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -98,23 +134,36 @@ const styles = StyleSheet.create({
         width: 300,
         borderRadius: 15
     },
+    valueContainer:{
+        flexDirection:'row',
+        alignItems: 'center', 
+        justifyContent: 'flex-end',
+        flex: 4
+    },
+    nameContainer:{
+        flex:6,
+        marginLeft:15
+    },
     checkboxContainer:{
         width: 70,
         height:50, 
+        alignItems: 'center',
+        justifyContent: 'center', 
+        borderRadius:15,
+    },
+    subContainer:{
+        width: 25,
+        height:25, 
         alignItems: 'center', 
         justifyContent: 'center', 
         borderRadius:15,
-        flex:3
+        marginRight:5
     },
     checkboxIdle:{
         backgroundColor:'#f3d6ff'
     },
     checkboxSelected:{
         backgroundColor:'#dc8aff'
-    },
-    nameContainer:{
-        flex:7,
-        marginLeft:15
     },
     spaceAfter:{
         marginBottom:20

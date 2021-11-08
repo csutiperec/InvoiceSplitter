@@ -5,10 +5,10 @@ import Button from './Button'
 const Invoice = ({navigation, route}:any) => {
     const [invoiceItems, setInvoiceItems] = useState([] as Array<InvoiceItem>)
 
-    const onReturn = (itemName:string, itemPrice:number, debters:Array<string>, itemID:number) => {
+    const onReturn = (itemName:string, itemPrice:number, debters:Array<Debter>, itemID:number) => {
         if(itemName!='' && itemPrice!=0){
             if(debters.length===0){
-                debters = route.params.people.map((person:{id:number, name:string})=>{return person.name});
+                debters = route.params.people.map((person:{id:number, name:string})=>{return {name:person.name, number:1}});
             }
             const newArray = [...invoiceItems];
             if(itemID<0){
@@ -67,7 +67,11 @@ type InvoiceItem = {
     id:number,
     itemName:string,
     itemPrice:number,
-    debters:Array<string>
+    debters:Array<Debter>
+}
+type Debter = {
+    name:string,
+    number:number
 }
 
 const styles = StyleSheet.create({
