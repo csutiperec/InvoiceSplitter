@@ -4,6 +4,7 @@ import Button from './Button'
 
 const Invoice = ({navigation, route}:any) => {
     const [invoiceItems, setInvoiceItems] = useState([] as Array<InvoiceItem>)
+    const [nextID, setNextID] = useState(0);
 
     const onReturn = (itemName:string, itemPrice:number, debters:Array<Debter>, itemID:number) => {
         if(itemName!='' && itemPrice!=0){
@@ -13,13 +14,14 @@ const Invoice = ({navigation, route}:any) => {
             const newArray = [...invoiceItems];
             if(itemID<0){
                 
-                newArray.push({id:newArray.length, itemName:itemName, itemPrice:itemPrice, debters:debters});
+                newArray.push({id:nextID, itemName:itemName, itemPrice:itemPrice, debters:debters});
+                setNextID(nextID+1);
             }
             else{
                 const item_ = newArray.find((item)=>{return item.id===itemID});
                 if(item_=== undefined) return;
                 const index = newArray.indexOf(item_);
-                newArray.splice(index, 1, {id:newArray.length, itemName:itemName, itemPrice:itemPrice, debters:debters});
+                newArray.splice(index, 1, {id:itemID, itemName:itemName, itemPrice:itemPrice, debters:debters});
             }
             setInvoiceItems(newArray);
         }
