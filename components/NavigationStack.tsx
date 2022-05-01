@@ -10,6 +10,7 @@ import Invoice from './Invoice';
 import AddItemToInvoice from './AddItemToInvoice';
 import InvoiceSummary from './InvoiceSummary';
 import PersonItems from './PersonItems';
+import CameraView from './CameraView';
 
 const NavigationStack = () => {
     const Stack = createNativeStackNavigator();
@@ -22,6 +23,7 @@ const NavigationStack = () => {
           <Stack.Screen name='CreateGroup' component={CreateGroup} options={{title:'Group'}} initialParams={{name: '', mode: 'add'}}/>
           <Stack.Screen name='InvoiceIn' component={InvoiceIn} options={{title: 'Invoice In'}}/>
           <Stack.Screen name='Invoice' component={Invoice} options={{title: 'Invoice'}}/>
+          <Stack.Screen name='CameraView' component={CameraView} options={{title: 'Camera'}}/>
           <Stack.Screen name='AddItemToInvoice' component={AddItemToInvoice} options={{title: 'Add Item'}} initialParams={{itemID: -1, itemName:'', itemPrice:'', debters:[]}}/>
           <Stack.Screen name='InvoiceSummary' component={InvoiceSummary} options={{title: 'Summary'}} />
           <Stack.Screen name='PersonItems' component={PersonItems} options={{title: 'Person'}} />

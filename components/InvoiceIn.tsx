@@ -5,13 +5,16 @@ import Button from './Button';
 const InvoiceIn = ({navigation, route}:any) => {
 
     const onManualInput = () => {
+        navigation.navigate('CameraView', {groupName:route.params.groupName, people: route.params.people, saveID: route.params.saveID});
+    }
+    const onCameraInput = () => {
         navigation.navigate('Invoice', {groupName:route.params.groupName, people: route.params.people, saveID: route.params.saveID});
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.spaceAfter}>
-                <Button text='Take a picture' />
+                <Button onPress={onCameraInput} text='Take a picture' />
             </View>
             <View style={styles.spaceAfter}>
                 <Button onPress={onManualInput} text='Manual input' />
