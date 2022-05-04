@@ -5,10 +5,10 @@ import Button from './Button';
 const InvoiceIn = ({navigation, route}:any) => {
 
     const onManualInput = () => {
-        navigation.navigate('CameraView', {groupName:route.params.groupName, people: route.params.people, saveID: route.params.saveID});
+        navigation.navigate('Invoice', {groupName:route.params.groupName, people: route.params.people, saveID: route.params.saveID});
     }
     const onCameraInput = () => {
-        navigation.navigate('Invoice', {groupName:route.params.groupName, people: route.params.people, saveID: route.params.saveID});
+        navigation.navigate('CameraView', {groupName:route.params.groupName, people: route.params.people, saveID: route.params.saveID});
     }
 
     return (
